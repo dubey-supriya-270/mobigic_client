@@ -1,0 +1,30 @@
+.delete-confirmation-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: auto;
+  }
+  
+  .confirmation-message {
+    text-align: center;
+  }
+  
+  .confirmation-message-sub {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--primaryBlue);
+  }
+  
+  .delete-button-container {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    bottom: 30px;
+    width: 90%;
+  }
+  
+  .delete-button-container .button {
+    margin: 0px 5px;
+  }
+  
