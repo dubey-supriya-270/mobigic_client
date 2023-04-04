@@ -22,3 +22,34 @@ export const isJWTValid = () => {
     throw new Error("Unable to decode JWT");
   }
 };
+
+export const validatePassword = (password: string) => {
+  // Password length should be at least 8 characters
+  if (password.length < 8) {
+    return false;
+  }
+
+  // Password should contain at least one uppercase letter
+  if (!/[A-Z]/.test(password)) {
+    return false;
+  }
+
+  // Password should contain at least one lowercase letter
+  if (!/[a-z]/.test(password)) {
+    return false;
+  }
+
+  // Password should contain at least one digit
+  if (!/\d/.test(password)) {
+    return false;
+  }
+
+  // Password should contain at least one special character
+  const specialCharacters = "!@#$%^&*()_+-=[]{}|;':\"<>,.?/~`";
+  if (!specialCharacters.split("").some((char) => password.includes(char))) {
+    return false;
+  }
+
+  // If all conditions pass, password is valid
+  return true;
+};

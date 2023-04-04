@@ -7,6 +7,7 @@ import { LoadingContext } from "../../contexts/Loading";
 import { signIn } from "../../actions/user";
 import { Link } from "react-router-dom";
 import { History } from "history";
+import { validatePassword } from "../../helpers/validate";
 
 //Interface for props
 interface Props {
@@ -15,10 +16,15 @@ interface Props {
 interface IUser {
   userName: string;
   password: string;
+  passwordError: string;
 }
 //SignIn component
 export const SignIn: React.FC<Props> = (props) => {
-  const [user, setUser] = useState<IUser>({ userName: "", password: "" });
+  const [user, setUser] = useState<IUser>({
+    userName: "",
+    password: "",
+    passwordError: "",
+  });
   const [error, setError] = useState<string>("");
   //Get the state and the dispatch properties form the UserContext and rename them to userState and userDispatch resp.
   const { state: userState, dispatch: userDispatch } = useContext(UserContext);
@@ -30,17 +36,25 @@ export const SignIn: React.FC<Props> = (props) => {
     setUser({
       ...user,
       [e.target.name]: e.target.value,
+      passwordError: "",
     });
   };
 
   //handleClick method that is executed when the Sign In button is clicked
   const handleClick = () => {
-    if (user.userName && user.password) {
+    const isValidPassword = validatePassword(user.password);
+    if (user.userName && user.password && isValidPassword) {
       signIn(
         user.userName,
         user.password,
         props.history
       )(userDispatch, loadingDispatch);
+    } else if (!isValidPassword) {
+      setUser({
+        ...user,
+        passwordError:
+          "Password contain alphanumeric characters and special characters and length at least 8 characters ",
+      });
     } else {
       setError("Please fill all details");
     }
@@ -82,6 +96,10 @@ export const SignIn: React.FC<Props> = (props) => {
           {error !== "" && <p className="sign-in-error">{error}</p>}
           {userState.error !== "" && (
             <p className="sign-in-error">{userState.error}</p>
+          )}
+
+          {user.passwordError !== "" && (
+            <p className="sign-in-error">{user.passwordError}</p>
           )}
         </div>
       </div>

@@ -8,6 +8,7 @@ import { LoadingContext } from "../../contexts/Loading";
 import { addUser } from "../../actions/user";
 import { Link } from "react-router-dom";
 import { History } from "history";
+import { validatePassword } from "../../helpers/validate";
 
 //Interface for props
 interface Props {
@@ -17,6 +18,7 @@ interface IUser {
   userName: string;
   password: string;
   confirmPassword: string;
+  passwordError: string;
 }
 //SignIn component
 export const SignUp: React.FC<Props> = (props) => {
@@ -24,6 +26,7 @@ export const SignUp: React.FC<Props> = (props) => {
     userName: "",
     password: "",
     confirmPassword: "",
+    passwordError: "",
   });
 
   const [error, setError] = useState<string>("");
@@ -37,21 +40,30 @@ export const SignUp: React.FC<Props> = (props) => {
     setUser({
       ...user,
       [e.target.name]: e.target.value,
+      passwordError: "",
     });
   };
 
   //handleClick method that is executed when the Sign In button is clicked
   const handleClick = () => {
+    const isValidPassword = validatePassword(user.password);
     if (
       user.userName &&
       user.password &&
-      user.password === user.confirmPassword
+      user.password === user.confirmPassword &&
+      isValidPassword
     ) {
       addUser(
         user.userName,
         user.password,
         props?.history
       )(userDispatch, loadingDispatch);
+    } else if (!isValidPassword) {
+      setUser({
+        ...user,
+        passwordError:
+          "Password contain alphanumeric characters and special characters and length at least 8 characters ",
+      });
     } else {
       setError("Please fill all details");
     }
@@ -102,6 +114,9 @@ export const SignUp: React.FC<Props> = (props) => {
           {error !== "" && <p className="sign-up-error">{error}</p>}
           {userState.error !== "" && (
             <p className="sign-up-error">{userState.error}</p>
+          )}
+          {user.passwordError !== "" && (
+            <p className="sign-in-error">{user.passwordError}</p>
           )}
         </div>
       </div>
