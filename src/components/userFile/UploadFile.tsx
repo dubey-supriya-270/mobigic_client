@@ -58,7 +58,6 @@ export const Upload: React.FC<Props> = ({
                   hidden
                   id="gallery-upload-file"
                   onChange={(e) => handleFileChange(e)}
-                  accept={"application/pdf"}
                 />
               </label>
             </div>
