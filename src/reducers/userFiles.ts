@@ -1,11 +1,11 @@
 import {
   UPLOAD_FILES,
   UPLOAD_FILES_ERROR,
-  GET_ALL_LIBRARY_FILES,
-  GET_ALL_LIBRARY_FILES_ERROR,
-  CLEAR_LIBRARY_ERROR,
-  DELETE_GALLERY_IMAGE,
-  DELETE_GALLERY_IMAGE_ERROR,
+  GET_ALL_FILES,
+  GET_ALL_FILES_ERROR,
+  CLEAR_ERROR,
+  DELETE_FILE,
+  DELETE_FILE_ERROR,
   VERIFY_UNIQUE_CODE,
   VERIFY_UNIQUE_CODE_ERROR,
 } from "../actions/Types";
@@ -21,22 +21,22 @@ export type Actions =
       payload: string;
     }
   | {
-      type: typeof GET_ALL_LIBRARY_FILES;
+      type: typeof GET_ALL_FILES;
       payload: any;
     }
   | {
-      type: typeof GET_ALL_LIBRARY_FILES_ERROR;
+      type: typeof GET_ALL_FILES_ERROR;
       payload: string;
     }
   | {
-      type: typeof CLEAR_LIBRARY_ERROR;
+      type: typeof CLEAR_ERROR;
     }
   | {
-      type: typeof DELETE_GALLERY_IMAGE;
+      type: typeof DELETE_FILE;
       payload: any;
     }
   | {
-      type: typeof DELETE_GALLERY_IMAGE_ERROR;
+      type: typeof DELETE_FILE_ERROR;
       payload: string;
     }
   | {
@@ -52,8 +52,8 @@ export type Actions =
 interface IUserService {
   uploadFileError: string | null;
   uploadFileSuccess: any | null;
-  allLibraryFiles: any;
-  allLibraryFilesError: string | null;
+  allFiles: any;
+  allFilesError: string | null;
   deleteFileError: string | null;
   deleteFileSuccess: string | null;
   uniqueCodeError: string | null;
@@ -67,8 +67,8 @@ export type State = IUserService;
 export const initialState: State = {
   uploadFileError: null,
   uploadFileSuccess: null,
-  allLibraryFiles: [],
-  allLibraryFilesError: null,
+  allFiles: [],
+  allFilesError: null,
   deleteFileError: null,
   deleteFileSuccess: null,
   uniqueCodeError: null,
@@ -94,24 +94,24 @@ export const Library = (
           ? action.payload
           : "Unable to upload image.Please try again later.",
       };
-    case GET_ALL_LIBRARY_FILES:
+    case GET_ALL_FILES:
       return {
         ...state,
-        allLibraryFiles: action.payload,
+        allFiles: action.payload,
       };
-    case GET_ALL_LIBRARY_FILES_ERROR:
+    case GET_ALL_FILES_ERROR:
       return {
         ...state,
-        allLibraryFilesError: action.payload
+        allFilesError: action.payload
           ? action.payload
           : "Unable to fetch images at this moment.",
       };
-    case DELETE_GALLERY_IMAGE:
+    case DELETE_FILE:
       return {
         ...state,
         deleteFileSuccess: action.payload,
       };
-    case DELETE_GALLERY_IMAGE_ERROR:
+    case DELETE_FILE_ERROR:
       return {
         ...state,
         deleteFileError: action.payload
@@ -130,10 +130,10 @@ export const Library = (
           ? action.payload
           : "Unable to verify unique code. Please try again later.",
       };
-    case CLEAR_LIBRARY_ERROR:
+    case CLEAR_ERROR:
       return {
         ...state,
-        allLibraryFilesError: null,
+        allFilesError: null,
         uploadFileSuccess: null,
         uploadFileError: null,
         deleteFileError: null,

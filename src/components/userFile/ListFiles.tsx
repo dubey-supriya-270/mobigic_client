@@ -98,7 +98,7 @@ export const ListFiles: React.FC<Props> = ({
     );
   };
   // Function for listing Documents
-  const listDocuments = () => {
+  const listFile = () => {
     return (
       // Main Container
       <div className="list-files-wrapper">
@@ -167,7 +167,7 @@ export const ListFiles: React.FC<Props> = ({
       {allFiles.length > 0 ? (
         <>
           <h1 className="list-file-header">Files</h1>
-          {listDocuments()}
+          {listFile()}
         </>
       ) : // the showLoader props is true then show the loader
       showImageLoader ? (

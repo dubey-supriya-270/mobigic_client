@@ -13,10 +13,10 @@ import { Button } from "../common/Button";
 import { Upload } from "./UploadFile";
 import useUserDetails from "../../hooks/useUserDetails";
 
-// Main Library Component
+// Main File Component
 export const FileComponent: React.FC = () => {
-  //Get the state and the dispatch properties form the LibraryContext and rename them to userFilesState and userFilesStateDispatch resp.
-  const { state: userFilesState, dispatch: libraryDispatch } =
+  //Get the state and the dispatch properties form the userFilesContext and rename them to userFilesState and userFilesDispatch resp.
+  const { state: userFilesState, dispatch: userFilesDispatch } =
     useContext(UserFilesContext);
   //Get the state and the dispatch properties form the LoadingContext and rename them to loadingState and loadingDispatch resp.
   const { dispatch: loadingDispatch } = useContext(LoadingContext);
@@ -39,21 +39,21 @@ export const FileComponent: React.FC = () => {
   const [enterUniqueCode, setEnterUniqueCode] = useState<string>("");
   useUserDetails();
 
-  // Call the useEffect to fetch all library files
+  // Call the useEffect to fetch all files
   useEffect(() => {
-    getAllLibraryFiles();
+    getAllUserFiles();
   }, []);
 
   const handleChangeUniqueCode = (e: any) => {
     setEnterUniqueCode(e.target.value);
   };
 
-  // Function for fetching all library files
-  const getAllLibraryFiles = async () => {
+  // Function for fetching all  files
+  const getAllUserFiles = async () => {
     // Set Show Loader as true
     setShowImageLoader(true);
     // calling the getAllFiles action
-    await getAllFiles()(libraryDispatch, loadingDispatch).then(() => {
+    await getAllFiles()(userFilesDispatch, loadingDispatch).then(() => {
       // Set Show Loader as false
       setShowImageLoader(false);
     });
@@ -65,10 +65,12 @@ export const FileComponent: React.FC = () => {
     setShowUploadLoader(true);
 
     // calling the action
-    await uploadFile(data)(libraryDispatch, loadingDispatch).then(async () => {
-      // Set Show Loader as false
-      setShowUploadLoader(false);
-    });
+    await uploadFile(data)(userFilesDispatch, loadingDispatch).then(
+      async () => {
+        // Set Show Loader as false
+        setShowUploadLoader(false);
+      }
+    );
   };
 
   // Call this useEffect when file is successfully uploaded
@@ -80,8 +82,8 @@ export const FileComponent: React.FC = () => {
 
   // Call this useEffect when file is successfully uploaded
   useEffect(() => {
-    setSelectedTabData(userFilesState.allLibraryFiles);
-  }, [userFilesState.allLibraryFiles]);
+    setSelectedTabData(userFilesState.allFiles);
+  }, [userFilesState.allFiles]);
 
   // Function for handle file change
   const handleFileChange = (e: any) => {
@@ -119,11 +121,11 @@ export const FileComponent: React.FC = () => {
   };
 
   // Function for deleting library files
-  const deleteLibraryFiles = async (id: string) => {
+  const deleteUserFiles = async (id: string) => {
     // Set Show Loader as true
     setShowImageLoader(true);
     // Call the [deleteFiles] action with selected files
-    await deleteFile(id)(libraryDispatch, loadingDispatch).then(() => {
+    await deleteFile(id)(userFilesDispatch, loadingDispatch).then(() => {
       // Set Show Loader as false
       setShowImageLoader(false);
     });
@@ -136,7 +138,7 @@ export const FileComponent: React.FC = () => {
 
   const verifyUniqueCodeClick = async (id: string, uniqueCode: string) => {
     const successfullyVerified = await verifyUniqueCode(id, uniqueCode)(
-      libraryDispatch,
+      userFilesDispatch,
       loadingDispatch
     );
 
@@ -169,10 +171,10 @@ export const FileComponent: React.FC = () => {
       {/* List files Component */}
       <ListFiles
         allFiles={selectedTabData}
-        allFilesError={userFilesState.allLibraryFilesError}
+        allFilesError={userFilesState.allFilesError}
         uniqueCodeError={userFilesState.uniqueCodeError}
         showImageLoader={showImageLoader}
-        deleteImageFunction={deleteLibraryFiles}
+        deleteImageFunction={deleteUserFiles}
         verifyUniqueCodeClick={verifyUniqueCodeClick}
         showModal={showModal}
         cancelClickFunction={cancelClickFunction}

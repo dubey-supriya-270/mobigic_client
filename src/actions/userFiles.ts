@@ -4,11 +4,11 @@ import axios from "axios";
 import {
   UPLOAD_FILES,
   UPLOAD_FILES_ERROR,
-  GET_ALL_LIBRARY_FILES,
-  GET_ALL_LIBRARY_FILES_ERROR,
-  CLEAR_LIBRARY_ERROR,
-  DELETE_GALLERY_IMAGE,
-  DELETE_GALLERY_IMAGE_ERROR,
+  GET_ALL_FILES,
+  GET_ALL_FILES_ERROR,
+  CLEAR_ERROR,
+  DELETE_FILE,
+  DELETE_FILE_ERROR,
   VERIFY_UNIQUE_CODE,
   VERIFY_UNIQUE_CODE_ERROR,
 } from "./Types";
@@ -70,7 +70,7 @@ export const getAllFiles =
       stopLoading(loadingDispatch);
       //Dispatch the result token with GET_ALL_LIBRARY_FILES type action
       dispatch({
-        type: GET_ALL_LIBRARY_FILES,
+        type: GET_ALL_FILES,
         payload: result.data.data,
       });
       //Clear all errors in the reducer
@@ -80,7 +80,7 @@ export const getAllFiles =
       stopLoading(loadingDispatch);
       //dispatch the error data
       dispatch({
-        type: GET_ALL_LIBRARY_FILES_ERROR,
+        type: GET_ALL_FILES_ERROR,
         payload: err.response
           ? err.response.data?.message
           : "Failed to connect to the server",
@@ -104,7 +104,7 @@ export const deleteFile =
       stopLoading(loadingDispatch);
       //Dispatch the result token with DELETE_GALLERY_IMAGE type action
       dispatch({
-        type: DELETE_GALLERY_IMAGE,
+        type: DELETE_FILE,
         payload: result.data.message,
       });
       // fetching all file
@@ -114,7 +114,7 @@ export const deleteFile =
       stopLoading(loadingDispatch);
       //dispatch the error data
       dispatch({
-        type: DELETE_GALLERY_IMAGE_ERROR,
+        type: DELETE_FILE_ERROR,
         payload: err.response
           ? err.response.data.message
           : "Failed to connect to the server",
@@ -169,6 +169,6 @@ export const verifyUniqueCode =
 export const clearErrors = (dispatch: React.Dispatch<Actions>) => {
   //Dispatch CLEAR_ERRORS type
   dispatch({
-    type: CLEAR_LIBRARY_ERROR,
+    type: CLEAR_ERROR,
   });
 };
